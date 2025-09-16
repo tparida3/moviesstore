@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2>Checkout Survey</h2>
+  <p>Please tell us how you felt about the checkout process. Name is optional.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" name="cancel" class="btn btn-secondary">Cancel</button>
+  </form>
+</div>
+{% endblock %}

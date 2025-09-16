@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2>Survey Responses</h2>
+  {% for r in responses %}
+    <div class="border rounded p-2 mb-2">
+      <p><strong>{{ r.name|default:"Anonymous" }}</strong> on {{ r.date|date:"Y-m-d H:i" }}</p>
+      <p>{{ r.thoughts }}</p>
+    </div>
+  {% empty %}
+    <p>No responses yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

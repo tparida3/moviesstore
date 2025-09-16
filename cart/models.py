@@ -20,3 +20,11 @@ class Item(models.Model):
 
     def __str__(self):
         return str(self.id) + ' - ' + self.movie.name
+
+class SurveyResponse(models.Model):
+    name = models.CharField(max_length=100, blank=True)  # optional
+    thoughts = models.TextField(blank = True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name or 'Anonymous'} - {self.date.strftime('%Y-%m-%d')}"

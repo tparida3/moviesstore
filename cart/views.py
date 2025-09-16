@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from movies.models import Movie
 from .utils import calculate_cart_total
-from .models import Order, Item
+from .models import Order, Item, SurveyResponse
 from django.contrib.auth.decorators import login_required
+from .forms import SurveyForm
 
 def index(request):
     cart_total = 0
@@ -59,4 +60,24 @@ def purchase(request):
     template_data = {}
     template_data['title'] = 'Purchase confirmation'
     template_data['order_id'] = order.id
-    return render(request, 'cart/purchase.html', {'template_data': template_data})
+    #return render(request, 'cart/purchase.html', {'template_data': template_data})
+    return redirect('survey')
+
+def survey(request):
+    if request.method == 'POST':
+        if 'cancel' in request.POST:   # cancel button pressed
+            return redirect('home.index')   # go back home
+        form = SurveyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('survey.thank_you')
+    else:
+        form = SurveyForm()
+    return render(request, 'cart/survey.html', {'form': form})
+
+def survey_thank_you(request):
+    return render(request, 'cart/survey_thank_you.html')
+
+def survey_list(request):
+    responses = SurveyResponse.objects.all().order_by('-date')
+    return render(request, 'cart/survey_list.html', {'responses': responses})
